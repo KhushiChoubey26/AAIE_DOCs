@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('docs');
+  return docs.map((doc) => ({
+    params: { slug: doc.slug },
+    props: { doc },
+  }));
+}
+
+const { doc } = Astro.props;
+const { Content } = await doc.render();
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>{doc.data.title}</title>
+		<meta name="description" content={doc.data.description} />
+	</head>
+	<body>
+		<article>
+			<h1>{doc.data.title}</h1>
+			<Content />
+		</article>
+		<p><a href="/">← Back to Home</a></p>
+	</body>
+</html>

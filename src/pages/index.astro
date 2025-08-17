@@ -1,5 +1,9 @@
 ---
+import { getCollection } from 'astro:content';
 
+// Get all blog posts and docs
+const blogPosts = await getCollection('blog');
+const docs = await getCollection('docs');
 ---
 
 <html lang="en">
@@ -8,9 +12,29 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>AAIE Docs - Content Management</title>
 	</head>
 	<body>
-		<h1>Astro</h1>
+		<h1>AAIE Documentation</h1>
+		
+		<h2>Latest Blog Posts</h2>
+		<ul>
+			{blogPosts.map((post) => (
+				<li>
+					<a href={`/blog/${post.slug}`}>{post.data.title}</a>
+					<p>{post.data.description}</p>
+				</li>
+			))}
+		</ul>
+
+		<h2>Documentation</h2>
+		<ul>
+			{docs.map((doc) => (
+				<li>
+					<a href={`/docs/${doc.slug}`}>{doc.data.title}</a>
+					<p>{doc.data.description}</p>
+				</li>
+			))}
+		</ul>
 	</body>
 </html>
